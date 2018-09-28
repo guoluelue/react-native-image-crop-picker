@@ -19,7 +19,6 @@
                                                                                  @"LowQuality": AVAssetExportPresetLowQuality,
                                                                                  @"MediumQuality": AVAssetExportPresetMediumQuality,
                                                                                  @"HighestQuality": AVAssetExportPresetHighestQuality,
-                                                                                 @"Passthrough": AVAssetExportPresetPassthrough,
                                                                                  }];
     NSOperatingSystemVersion systemVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
     if (systemVersion.majorVersion >= 9) {
@@ -72,7 +71,7 @@
     
     NSNumber *compressQuality = [options valueForKey:@"compressImageQuality"];
     if (compressQuality == nil) {
-        compressQuality = [NSNumber numberWithFloat:0.8];
+        compressQuality = [NSNumber numberWithFloat:1];
     }
     
     result.data = UIImageJPEGRepresentation(result.image, [compressQuality floatValue]);
