@@ -566,6 +566,37 @@ class PickerModule extends ReactContextBaseJavaModule implements ActivityEventLi
             }
         }
 
+
+        /* 某些android机型竖屏拍摄旋转问题 */
+        image.putString("uri", path);
+        int currentRotation = 0;
+        try {
+          // ExifInterface exif = new ExifInterface(compressedImagePath);
+          ExifInterface exif = new ExifInterface(path);
+
+          int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+          boolean isVertical = true;
+          switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_270:
+              isVertical = false;
+              currentRotation = 270;
+              break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+              isVertical = false;
+              currentRotation = 90;
+              break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+              currentRotation = 180;
+              break;
+          }
+          image.putInt("originalRotation", currentRotation);
+          image.putBoolean("isVertical", isVertical);
+        } catch (IOException e) {
+          e.printStackTrace();
+          image.putString("error", e.getMessage());
+        }
+
+
         return image;
     }
 
